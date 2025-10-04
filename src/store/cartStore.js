@@ -1,6 +1,6 @@
 import { create} from 'zustand';
-
-const useCartStore = create ((set, get)=>({
+import {persist} from 'zustand/middleware'
+const useCartStore = create (persist((set, get)=>({
     cart:[],
     addCart : (item) =>{
         const cart = get().cart
@@ -24,7 +24,9 @@ const useCartStore = create ((set, get)=>({
     }),
     clearCart: () =>set({cart:[]}),
     totalCartValue : () => get().cart.reduce((sum,item)=> sum + item.price * item.qty,0)
-}))
+}),{name: 'cartStorage'}
+)
+)
 useCartStore.subscribe((cart) => {
     console.log("Cart changed:", cart)
   })
