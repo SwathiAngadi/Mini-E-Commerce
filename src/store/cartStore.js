@@ -26,6 +26,9 @@ const useCartStore = create(
           cart: get().cart.map((i) => (i.id === id ? { ...i, qty } : i)),
         }),
       clearCart: () => set({ cart: [] }),
+       // 👇 computed property
+       getTotalItems: () =>
+    get().cart.reduce((sum, item) => sum + item.qty, 0),
       totalCartValue: () =>
         get().cart.reduce((sum, item) => sum + item.price * item.qty, 0),
     }),

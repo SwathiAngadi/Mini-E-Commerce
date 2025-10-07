@@ -1,6 +1,9 @@
 import useCartStore from "../store/cartStore";
 import { Trash2 } from "lucide-react";
+import Checkout from './Checkout';
+
 const Cart = () => {
+  
   const { cart, updateQuantity, removeCart, totalCartValue, clearCart } =
     useCartStore();
   return (
@@ -38,10 +41,10 @@ const Cart = () => {
           className="text-red-500 border rounded p-2"
           onClick={() => clearCart}
         >
-          {" "}
-          Clear Cart{" "}
-        </button>
+          Clear Cart
+        </button>      
       </div>
+      {cart ? <Checkout />: null}
     </div>
   );
 };

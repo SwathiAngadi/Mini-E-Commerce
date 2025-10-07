@@ -1,22 +1,48 @@
+import {Link, Routes, Route} from 'react-router-dom';
+import { useAuth0 } from "@auth0/auth0-react";
+import { Baby } from "lucide-react";
+
 import ProductList from "./components/ProductList";
 import Cart from "./components/Cart";
-import Login from "./components/Login";
+import CartIcon from './components/CartIcon';
+import ThemeSwitcher from './components/ThemeSwitcher';
+
 import "./App.css";
-import { Baby } from "lucide-react";
-import Checkout from "./components/Checkout";
+
 function App() {
+  const { loginWithRedirect, logout, user, isAuthenticated, isLoading } =  useAuth0();
+
   return (
-    <>
-      <h1 className="text-3xl flex font-bold items-center w-fit mt-3 mx-auto">
-        {" "}
-        <Baby size={40} />
-        Baby Store
-      </h1>
-      <Login />
-      <ProductList />
-      <Cart />
-      <Checkout />
-    </>
+    <div className='min-h-screen bg-pink-50 dark:bg-gray-700 dark:text-white'>
+      <header className='flex flex-row bg-pink-200 dark:bg-gray-800 dark:text-white'>
+      <Link to='/' className=" flex-1 text-3xl flex font-bold items-left w-fit pt-2 ">
+        <Baby size={40} /> Baby Store
+      </Link>
+      <Link to='/cart' className=" h-fit m-2 bg-pink-300 text-white py-2 px-4 rounded hover:bg-pink-600 items-right"> <CartIcon /></Link>
+      <ThemeSwitcher />
+      { !isAuthenticated ? 
+        <button className="text-l border rounded p-2 m-2"
+          onClick={() => loginWithRedirect()}        >
+          Log In
+        </button> 
+        : 
+        <button
+          className="text-l m-2 border rounded p-2"
+          onClick={() => logout({ returnTo: window.location.origin })}      >
+          Log Out
+        </button>
+      }
+      </header>
+     
+      <div>
+        <Routes>
+          <Route path='/' element={<ProductList/>}/>
+          <Route path='/cart' element={<Cart/>}/>
+        </Routes>
+      </div>
+      
+    
+    </div>
   );
 }
 
