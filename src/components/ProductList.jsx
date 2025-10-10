@@ -4,6 +4,7 @@ import ReactPaginate from "react-paginate";
 import useCartStore from "../store/cartStore";
 import { useProducts } from "../hooks/useProducts";
 import ProductCard from "./ProductCard";
+import Pagination from "./Pagination";
 
 const ProductList = () => {
   const addCart = useCartStore((state) => state.addCart);
@@ -22,35 +23,21 @@ const ProductList = () => {
   if (isError) return <h3>Failed to load products.</h3>;
 
   return (
-    <div>
+    <div className="m-5">
       <h2 className="text-3xl text-center mx-auto p-5">Products</h2>
 
       {products.map((prod) => (
+        
         <ProductCard key={prod.id} prod={prod} addCart={addCart} />
       ))}
 
-      {/* Pagination Controls */}
-      {!isLoading && products.length > 0 && (
-      <div className="flex justify-center mt-8">
-         <ReactPaginate
-          breakLabel="..."
-          nextLabel="Next ›"
-          previousLabel="‹ Prev"
-          onPageChange={handlePageClick}
-          pageRangeDisplayed={3}
-          marginPagesDisplayed={1}
-          pageCount={pageCount}
-          forcePage={page}
-          containerClassName="flex items-center space-x-2"
-          pageClassName="px-3 py-1 border rounded"
-          activeClassName="bg-pink-300 text-white border-pink-300"
-          previousClassName="px-3 py-1 border rounded"
-          nextClassName="px-3 py-1 border rounded"
-          disabledClassName="opacity-50 cursor-not-allowed"
-        /> 
-    
-    </div>
-      )}
+      
+<Pagination
+        page={page}
+        totalItems={totalItems}
+        limit={limit}
+        onPageChange={(p) => setPage(p)}
+      />
 
       {isFetching && (
         <p className="text-center text-gray-400 mt-2">Updating...</p>
